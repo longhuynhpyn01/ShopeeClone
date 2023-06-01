@@ -31,6 +31,7 @@ module.exports = {
     }
   },
   env: {
+    // Để set môi trường hiện tại thành Node
     node: true
   },
   rules: {
@@ -48,10 +49,10 @@ module.exports = {
         tabWidth: 2,
         endOfLine: "auto",
         useTabs: false,
-        // để dùng dấu nháy kép trong code
+        // Để dùng dấu nháy kép trong code
         singleQuote: false,
         printWidth: 120,
-        // để dùng dấu nháy kép trong jsx
+        // Để dùng dấu nháy kép trong jsx
         jsxSingleQuote: false
       }
     ]
