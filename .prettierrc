@@ -5,7 +5,26 @@
   "tabWidth": 2,
   "endOfLine": "auto",
   "useTabs": false,
-  "singleQuote": false, 
+  "singleQuote": false,
   "printWidth": 120,
-  "jsxSingleQuote": false 
+  "jsxSingleQuote": false,
+  "htmlWhitespaceSensitivity": "css",
+  "quoteProps": "as-needed",
+  "overrides": [
+    {
+      "files": "*.css",
+      "options": {
+        "parser": "css"
+      }
+    },
+    {
+      "files": "*.scss",
+      "options": {
+        "parser": "scss"
+      }
+    }
+  ],
+  "importOrder": ["^react(.*)$", "<THIRD_PARTY_MODULES>", "^components/(.*)", "@/(.*)", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

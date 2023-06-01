@@ -273,3 +273,10 @@ export default defineConfig({
   }
 })
 ```
+
+### Cấu hình React Router
+
+Cài package `react-router-dom` để sử dụng router
+
+```bash
+yarn add react-router-dom

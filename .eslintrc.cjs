@@ -53,7 +53,26 @@ module.exports = {
         singleQuote: false,
         printWidth: 120,
         // Để dùng dấu nháy kép trong jsx
-        jsxSingleQuote: false
+        jsxSingleQuote: false,
+        htmlWhitespaceSensitivity: "css",
+        quoteProps: "as-needed",
+        overrides: [
+          {
+            files: "*.css",
+            options: {
+              parser: "css"
+            }
+          },
+          {
+            files: "*.scss",
+            options: {
+              parser: "scss"
+            }
+          }
+        ],
+        importOrder: ["^react(.*)$", "<THIRD_PARTY_MODULES>", "^components/(.*)", "@/(.*)", "^[./]"],
+        importOrderSeparation: true,
+        importOrderSortSpecifiers: true
       }
     ]
   }
