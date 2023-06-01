@@ -280,3 +280,50 @@ Cài package `react-router-dom` để sử dụng router
 
 ```bash
 yarn add react-router-dom
+```
+
+### Sắp xếp code
+
+Cài package `react-router-dom` để sắp xếp code
+
+```bash
+yarn add @trivago/prettier-plugin-sort-imports -D
+```
+
+Thay đổi code tại file `.prettierrc`
+
+```json
+{
+  "arrowParens": "always",
+  "semi": true,
+  "trailingComma": "none",
+  "tabWidth": 2,
+  "endOfLine": "auto",
+  "useTabs": false,
+  "singleQuote": false,
+  "printWidth": 120,
+  "jsxSingleQuote": false,
+  "htmlWhitespaceSensitivity": "css",
+  "quoteProps": "as-needed",
+  "overrides": [
+    {
+      "files": "*.css",
+      "options": {
+        "parser": "css"
+      }
+    },
+    {
+      "files": "*.scss",
+      "options": {
+        "parser": "scss"
+      }
+    }
+  ],
+  "importOrder": ["^react(.*)$", "<THIRD_PARTY_MODULES>", "^components/(.*)", "@/(.*)", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
+```
+
+Thay đổi tương tự tại file `.eslintrc.cjs`
+
