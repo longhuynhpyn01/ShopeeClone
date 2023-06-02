@@ -31,11 +31,10 @@ export default function Register() {
 
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ["confirm_password"]);
-    console.log("body:", body);
 
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
-        console.log("data:", data);
+        console.log("data onSuccess register:", data);
         // setIsAuthenticated(true);
         // setProfile(data.data.data.user);
         // navigate("/");

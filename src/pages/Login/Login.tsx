@@ -6,7 +6,9 @@ import { useMutation } from "@tanstack/react-query";
 import authApi from "src/apis/auth.api";
 import Button from "src/components/Button";
 import Input from "src/components/Input";
+import { ErrorResponse } from "src/types/utils.type";
 import { Schema, schema } from "src/utils/rules";
+import { isAxiosUnprocessableEntityError } from "src/utils/utils";
 
 type FormData = Pick<Schema, "email" | "password">;
 
@@ -15,7 +17,7 @@ const loginSchema = schema.pick(["email", "password"]);
 export default function Login() {
   const {
     register,
-    // setError,
+    setError,
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
@@ -27,8 +29,30 @@ export default function Login() {
   });
 
   const onSubmit = handleSubmit((data) => {
-    // const body = omit(data, ["confirm_password"]);
     console.log("data:", data);
+
+    loginMutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log("data onSuccess Login:", data);
+        // setIsAuthenticated(true);
+        // setProfile(data.data.data.user);
+        // navigate("/");
+      },
+      onError: (error) => {
+        if (isAxiosUnprocessableEntityError<ErrorResponse<FormData>>(error)) {
+          const formError = error.response?.data.data;
+
+          if (formError) {
+            Object.keys(formError).forEach((key) => {
+              setError(key as keyof FormData, {
+                message: formError[key as keyof FormData],
+                type: "Server"
+              });
+            });
+          }
+        }
+      }
+    });
   });
 
   return (
