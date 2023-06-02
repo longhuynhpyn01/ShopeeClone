@@ -21,6 +21,7 @@ export default function Register() {
   });
 
   const onSubmit = handleSubmit((data) => {
+    // const body = omit(data, ["confirm_password"]);
     console.log("data:", data);
   });
 
