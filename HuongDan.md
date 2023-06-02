@@ -367,8 +367,8 @@ export default function useRouteElements() {
 
 ### Cài đặt React-hook-form để validate form
 
-Cài package `react-hook-form` để sắp xếp code
+Cài package `react-hook-form` và `yup` để validate form
 
 ```bash
-yarn add react-hook-form
+yarn add react-hook-form @hookform/resolvers yup
 ```
