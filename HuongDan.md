@@ -607,3 +607,34 @@ Cài package `lodash` và `@types/lodash`
 yarn add lodash
 yarn add @types/lodash
 ```
+
+
+### Cài thêm react-toastify
+
+
+```bash
+yarn add react-toastify
+```
+
+Config `react-toastify` trong file `App.tsx`
+
+```tsx
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import useRouteElements from "./useRouteElements";
+
+function App() {
+  const routeElements = useRouteElements();
+
+  return (
+    <div>
+      {routeElements}
+      <ToastContainer />
+    </div>
+  );
+}
+
+export default App;
+```
+

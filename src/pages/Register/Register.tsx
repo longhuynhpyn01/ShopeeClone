@@ -7,7 +7,9 @@ import { omit } from "lodash";
 import authApi from "src/apis/auth.api";
 import Button from "src/components/Button";
 import Input from "src/components/Input";
+import { ErrorResponse } from "src/types/utils.type";
 import { Schema, schema } from "src/utils/rules";
+import { isAxiosUnprocessableEntityError } from "src/utils/utils";
 
 type FormData = Pick<Schema, "email" | "password" | "confirm_password">;
 
@@ -17,7 +19,7 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    // setError,
+    setError,
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(registerSchema)
@@ -29,42 +31,47 @@ export default function Register() {
 
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ["confirm_password"]);
-    console.log("data:", data);
     console.log("body:", body);
 
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
+        console.log("data:", data);
         // setIsAuthenticated(true);
         // setProfile(data.data.data.user);
         // navigate("/");
       },
       onError: (error) => {
-        // if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, "confirm_password">>>(error)) {
-        //   const formError = error.response?.data.data;
-        //   if (formError) {
-        //     Object.keys(formError).forEach((key) => {
-        //       setError(key as keyof Omit<FormData, "confirm_password">, {
-        //         message: formError[key as keyof Omit<FormData, "confirm_password">],
-        //         type: "Server"
-        //       });
-        //     });
-        //   }
-        // if (formError?.email) {
-        //   setError('email', {
-        //     message: formError.email,
-        //     type: 'Server'
-        //   })
-        // }
-        // if (formError?.password) {
-        //   setError('password', {
-        //     message: formError.password,
-        //     type: 'Server'
-        //   })
-        // }
-        // }
+        if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, "confirm_password">>>(error)) {
+          const formError = error.response?.data.data;
+
+          if (formError) {
+            Object.keys(formError).forEach((key) => {
+              setError(key as keyof Omit<FormData, "confirm_password">, {
+                message: formError[key as keyof Omit<FormData, "confirm_password">],
+                type: "Server"
+              });
+            });
+          }
+
+          // C2: Check điều kiện nếu data trả về ít field
+          // if (formError?.email) {
+          //   setError("email", {
+          //     message: formError.email,
+          //     type: "Server"
+          //   });
+          // }
+          // if (formError?.password) {
+          //   setError("password", {
+          //     message: formError.password,
+          //     type: "Server"
+          //   });
+          // }
+        }
       }
     });
   });
+
+  console.log("errors:", errors);
 
   return (
     <div className="bg-orange">
