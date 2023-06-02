@@ -250,7 +250,7 @@ Cài package `@types/node` để sử dụng node js trong file ts không bị l
 yarn add -D @types/node
 ```
 
-file `vite.config.ts`
+File `vite.config.ts`
 
 ```ts
 import { defineConfig } from 'vite'
@@ -284,7 +284,7 @@ yarn add react-router-dom
 
 ### Sắp xếp code
 
-Cài package `react-router-dom` để sắp xếp code
+Cài package `@trivago/prettier-plugin-sort-imports` để sắp xếp code
 
 ```bash
 yarn add @trivago/prettier-plugin-sort-imports -D
@@ -327,3 +327,48 @@ Thay đổi code tại file `.prettierrc`
 
 Thay đổi tương tự tại file `.eslintrc.cjs`
 
+Thêm file `src/useRouteElements.tsx`
+
+```tsx
+import { useRoutes } from "react-router-dom";
+
+import RegisterLayout from "./layouts/RegisterLayout";
+import Login from "./pages/Login";
+import ProductList from "./pages/ProductList";
+import Register from "./pages/Register";
+
+export default function useRouteElements() {
+  const routeElements = useRoutes([
+    {
+      path: "/",
+      element: <ProductList />
+    },
+    {
+      path: "/login",
+      element: (
+        <RegisterLayout>
+          <Login />
+        </RegisterLayout>
+      )
+    },
+    {
+      path: "/register",
+      element: (
+        <RegisterLayout>
+          <Register />
+        </RegisterLayout>
+      )
+    }
+  ]);
+
+  return routeElements;
+}
+```
+
+### Cài đặt React-hook-form để validate form
+
+Cài package `react-hook-form` để sắp xếp code
+
+```bash
+yarn add react-hook-form
+```
