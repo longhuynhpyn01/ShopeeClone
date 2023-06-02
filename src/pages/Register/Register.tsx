@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
+import { omit } from "lodash";
+import authApi from "src/apis/auth.api";
 import Button from "src/components/Button";
 import Input from "src/components/Input";
 import { Schema, schema } from "src/utils/rules";
@@ -20,12 +23,48 @@ export default function Register() {
     resolver: yupResolver(registerSchema)
   });
 
-  const onSubmit = handleSubmit((data) => {
-    // const body = omit(data, ["confirm_password"]);
-    console.log("data:", data);
+  const registerAccountMutation = useMutation({
+    mutationFn: (body: Omit<FormData, "confirm_password">) => authApi.registerAccount(body)
   });
 
-  console.log("errors:", errors);
+  const onSubmit = handleSubmit((data) => {
+    const body = omit(data, ["confirm_password"]);
+    console.log("data:", data);
+    console.log("body:", body);
+
+    registerAccountMutation.mutate(body, {
+      onSuccess: (data) => {
+        // setIsAuthenticated(true);
+        // setProfile(data.data.data.user);
+        // navigate("/");
+      },
+      onError: (error) => {
+        // if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, "confirm_password">>>(error)) {
+        //   const formError = error.response?.data.data;
+        //   if (formError) {
+        //     Object.keys(formError).forEach((key) => {
+        //       setError(key as keyof Omit<FormData, "confirm_password">, {
+        //         message: formError[key as keyof Omit<FormData, "confirm_password">],
+        //         type: "Server"
+        //       });
+        //     });
+        //   }
+        // if (formError?.email) {
+        //   setError('email', {
+        //     message: formError.email,
+        //     type: 'Server'
+        //   })
+        // }
+        // if (formError?.password) {
+        //   setError('password', {
+        //     message: formError.password,
+        //     type: 'Server'
+        //   })
+        // }
+        // }
+      }
+    });
+  });
 
   return (
     <div className="bg-orange">

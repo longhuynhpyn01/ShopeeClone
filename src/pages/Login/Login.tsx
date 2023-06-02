@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
+import authApi from "src/apis/auth.api";
 import Button from "src/components/Button";
 import Input from "src/components/Input";
 import { Schema, schema } from "src/utils/rules";
@@ -18,6 +20,10 @@ export default function Login() {
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(loginSchema)
+  });
+
+  const loginMutation = useMutation({
+    mutationFn: (body: Omit<FormData, "confirm_password">) => authApi.login(body)
   });
 
   const onSubmit = handleSubmit((data) => {

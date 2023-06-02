@@ -599,3 +599,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   </React.StrictMode>
 );
 ```
+
+Cài package `lodash` và `@types/lodash`
+
+
+```bash
+yarn add lodash
+yarn add @types/lodash
+```
