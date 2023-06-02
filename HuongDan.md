@@ -485,7 +485,7 @@ export type Schema = yup.InferType<typeof schema>;
 ```
 
 
-### Config lại trong tailwind để xoa
+### Config lại trong tailwind để xoá
 
 File `tailwind.config.js`
 
@@ -524,4 +524,78 @@ module.exports = {
     // require("@tailwindcss/line-clamp")
   ]
 };
+```
+
+
+### Thêm axios, react-query
+
+```bash
+yarn add axios @tanstack/react-query @tanstack/react-query-devtools
+```
+
+Config axios tại file `utils/http.ts`
+
+```ts
+import axios, { AxiosError, type AxiosInstance } from "axios";
+import config from "src/constants/config";
+
+// Purchase: 1 - 3
+// Me: 2 - 5
+// Refresh Token cho purchase: 3 -  4
+// Gọi lại Purchase: 4 - 6
+// Refresh Token mới cho me: 5 - 6
+// Gọi lại Me: 6
+
+class Http {
+  instance: AxiosInstance;
+
+  constructor() {
+    this.instance = axios.create({
+      baseURL: config.baseUrl,
+      timeout: 10000,
+      headers: {
+        "Content-Type": "application/json",
+        "expire-access-token": 60 * 60 * 24, // 1 ngày
+        "expire-refresh-token": 60 * 60 * 24 * 160 // 160 ngày
+      }
+    });
+  }
+}
+const http = new Http().instance;
+
+export default http;
+```
+
+Config react-query tại file `main.tsx`
+
+```tsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import App from "./App";
+import "./index.css";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 0
+    }
+  }
+});
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <App />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+);
 ```
