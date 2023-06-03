@@ -20,7 +20,9 @@ interface AsideFilterProps {
   categories: Category[];
 }
 
+// Pick là chọn ngược lại với Omit
 type FormData = NoUndefinedField<Pick<Schema, "price_max" | "price_min">>;
+
 /**
  * Rule validate:
  * Nếu có price_min và price_max thì price_max >= price_min.
@@ -46,14 +48,14 @@ export default function AsideFilter({ queryConfig, categories }: AsideFilterProp
   });
   const navigate = useNavigate();
   const onSubmit = handleSubmit((data) => {
-    // navigate({
-    //   pathname: path.home,
-    //   search: createSearchParams({
-    //     ...queryConfig,
-    //     price_max: data.price_max,
-    //     price_min: data.price_min
-    //   }).toString()
-    // });
+    navigate({
+      pathname: path.home,
+      search: createSearchParams({
+        ...queryConfig,
+        price_max: data.price_max,
+        price_min: data.price_min
+      }).toString()
+    });
   });
 
   const handleRemoveAll = () => {
@@ -157,6 +159,7 @@ export default function AsideFilter({ queryConfig, categories }: AsideFilterProp
                     {...field}
                     onChange={(event) => {
                       field.onChange(event);
+                      // price_min trigger đến price_max để khi prce_max thay đổi thì price_min sẽ validate lại
                       trigger("price_max");
                     }}
                   />

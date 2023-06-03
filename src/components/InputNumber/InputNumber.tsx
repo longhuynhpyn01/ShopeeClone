@@ -6,6 +6,8 @@ export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> 
   classNameError?: string;
 }
 
+// Xây dựng InputNumber kiểu khác vì có hàm onChange xử lí khác
+// Dùng ref để có được behavior shoundFocusOnError
 const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function InputNumberInner(
   {
     errorMessage,
@@ -22,6 +24,8 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
+
+    // Check kiểm tra là 1 số
     if (/^\d+$/.test(value) || value === "") {
       // Thực thi onChange callback từ bên ngoài truyền vào props
       onChange && onChange(event);
@@ -29,6 +33,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
       setLocalValue(value);
     }
   };
+
   return (
     <div className={className}>
       <input className={classNameInput} onChange={handleChange} value={value || localValue} {...rest} ref={ref} />
