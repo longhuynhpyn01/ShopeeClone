@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
-// import userImage from "src/assets/images/user.svg";
-// import config from "src/constants/config";
+import userImage from "src/assets/images/user.svg";
+import config from "src/constants/config";
 import HttpStatusCode from "src/constants/httpStatusCode.enum";
 import { ErrorResponse } from "src/types/utils.type";
 
@@ -55,4 +55,4 @@ export const getIdFromNameId = (nameId: string) => {
   return arr[arr.length - 1];
 };
 
-// export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${config.baseUrl}images/${avatarName}` : userImage);
+export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${config.baseUrl}images/${avatarName}` : userImage);

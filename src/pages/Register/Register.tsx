@@ -1,5 +1,6 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
@@ -7,6 +8,7 @@ import { omit } from "lodash";
 import authApi from "src/apis/auth.api";
 import Button from "src/components/Button";
 import Input from "src/components/Input";
+import { AppContext } from "src/contexts/app.context";
 import { ErrorResponse } from "src/types/utils.type";
 import { Schema, schema } from "src/utils/rules";
 import { isAxiosUnprocessableEntityError } from "src/utils/utils";
@@ -16,6 +18,8 @@ type FormData = Pick<Schema, "email" | "password" | "confirm_password">;
 const registerSchema = schema.pick(["email", "password", "confirm_password"]);
 
 export default function Register() {
+  const { setIsAuthenticated, setProfile } = useContext(AppContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -35,9 +39,9 @@ export default function Register() {
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
         console.log("data onSuccess register:", data);
-        // setIsAuthenticated(true);
-        // setProfile(data.data.data.user);
-        // navigate("/");
+        setIsAuthenticated(true);
+        setProfile(data.data.data.user);
+        navigate("/");
       },
       onError: (error) => {
         if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, "confirm_password">>>(error)) {

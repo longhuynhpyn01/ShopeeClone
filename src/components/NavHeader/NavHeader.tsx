@@ -1,38 +1,36 @@
-// import { useContext } from "react";
+import { useContext } from "react";
 // import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import authApi from "src/apis/auth.api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import authApi from "src/apis/auth.api";
 import path from "src/constants/path";
-
 // import { purchasesStatus } from "src/constants/purchase";
-// import { AppContext } from "src/contexts/app.context";
+import { AppContext } from "src/contexts/app.context";
 // import { locales } from "src/i18n/i18n";
-// import { getAvatarUrl } from "src/utils/utils";
+import { getAvatarUrl } from "src/utils/utils";
+
 import Popover from "../Popover";
 
 export default function NavHeader() {
   // const { i18n } = useTranslation();
   // const currentLanguage = locales[i18n.language as keyof typeof locales];
 
-  // const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext);
+  const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext);
   // const queryClient = useQueryClient();
-  // const logoutMutation = useMutation({
-  //   mutationFn: authApi.logout,
-  //   onSuccess: () => {
-  //     setIsAuthenticated(false);
-  //     setProfile(null);
-  //     queryClient.removeQueries({ queryKey: ["purchases", { status: purchasesStatus.inCart }] });
-  //   }
-  // });
+  const logoutMutation = useMutation({
+    mutationFn: authApi.logout,
+    onSuccess: () => {
+      setIsAuthenticated(false);
+      setProfile(null);
+      // queryClient.removeQueries({ queryKey: ["purchases", { status: purchasesStatus.inCart }] });
+    }
+  });
 
-  const isAuthenticated = true;
   const currentLanguage = "Tiếng Việt";
-  const profile = { email: "admin@admin.com" };
 
   const handleLogout = () => {
-    // logoutMutation.mutate();
+    logoutMutation.mutate();
   };
 
   const changeLanguage = (lng: "en" | "vi") => {
@@ -110,8 +108,7 @@ export default function NavHeader() {
           }
         >
           <div className="mr-2 h-6 w-6 flex-shrink-0">
-            {/* <img src={getAvatarUrl(profile?.avatar)} alt="avatar" className="h-full w-full rounded-full object-cover" /> */}
-            <img src={""} alt="avatar" className="h-full w-full rounded-full object-cover" />
+            <img src={getAvatarUrl(profile?.avatar)} alt="avatar" className="h-full w-full rounded-full object-cover" />
           </div>
           <div>{profile?.email}</div>
         </Popover>
