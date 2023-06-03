@@ -61,16 +61,16 @@ class Http {
     this.instance.interceptors.response.use(
       // dùng arrow function thì mới truy cập được đến this
       (response) => {
-        console.log("response:", response);
         const { url } = response.config;
+
         if (url === URL_LOGIN || url === URL_REGISTER) {
           const data = response.data as AuthResponse;
-          console.log("***data:", data);
           this.accessToken = data.data.access_token;
           this.refreshToken = data.data.refresh_token;
+
           setAccessTokenToLS(this.accessToken);
           setRefreshTokenToLS(this.refreshToken);
-          // setProfileToLS(data.data.user);
+          setProfileToLS(data.data.user);
         } else if (url === URL_LOGOUT) {
           this.accessToken = "";
           this.refreshToken = "";

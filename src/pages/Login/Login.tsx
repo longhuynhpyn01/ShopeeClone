@@ -35,7 +35,6 @@ export default function Login() {
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
       onSuccess: (data) => {
-        console.log("data onSuccess Login:", data);
         setIsAuthenticated(true);
         setProfile(data.data.data.user);
         navigate("/");
@@ -86,8 +85,8 @@ export default function Login() {
                 <Button
                   type="submit"
                   className="flex items-center justify-center w-full px-2 py-4 text-sm text-white uppercase bg-red-500 hover:bg-red-600"
-                  // isLoading={loginMutation.isLoading}
-                  // disabled={loginMutation.isLoading}
+                  isLoading={loginMutation.isLoading}
+                  disabled={loginMutation.isLoading}
                 >
                   Đăng nhập
                 </Button>

@@ -38,7 +38,6 @@ export default function Register() {
 
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
-        console.log("data onSuccess register:", data);
         setIsAuthenticated(true);
         setProfile(data.data.data.user);
         navigate("/");
@@ -73,8 +72,6 @@ export default function Register() {
       }
     });
   });
-
-  console.log("errors:", errors);
 
   return (
     <div className="bg-orange">
@@ -116,8 +113,8 @@ export default function Register() {
               <div className="mt-2">
                 <Button
                   className="flex items-center justify-center w-full px-2 py-4 text-sm text-white uppercase bg-red-500 hover:bg-red-600"
-                  // isLoading={registerAccountMutation.isLoading}
-                  // disabled={registerAccountMutation.isLoading}
+                  isLoading={registerAccountMutation.isLoading}
+                  disabled={registerAccountMutation.isLoading}
                 >
                   Đăng ký
                 </Button>
