@@ -638,3 +638,15 @@ function App() {
 export default App;
 ```
 
+### Tìm hiểu thêm 1 số thư viện
+
+- Framer Motion ([www.framer.com/motion](https://www.framer.com/motion)) để dùng nhiều emotion đẹp
+- Floating UI ([www.floating-ui.com](https://floating-ui.com)) để tính toán position các tooltip mà muốn hiển thị mà hỗ trợ bên Typescript tốt hơn React Popper
+- React Popper ([www.popper.js.org/react-popper](https://popper.js.org/react-popper)) phiên bản cũ của Floating UI
+- Heroicons ([www.heroicons.com](https://heroicons.com)): lấy những icon của tailwind css
+
+
+```bash
+yarn add @floating-ui/react-dom-interactions
+yarn add framer-motion
+```
