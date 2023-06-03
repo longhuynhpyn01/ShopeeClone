@@ -29,6 +29,7 @@ module.exports = {
         }
       });
     })
+    // có thể cmt lại dòng dưới vì @tailwindcss/line-clamp đã được cài vô Tailwind CSS từ phiên bản v3.3
     // require("@tailwindcss/line-clamp")
   ]
 };

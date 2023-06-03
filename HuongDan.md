@@ -650,3 +650,10 @@ export default App;
 yarn add @floating-ui/react-dom-interactions
 yarn add framer-motion
 ```
+
+Cài thêm thư viện `@tailwindcss/line-clamp` để có thể dùng multi-line truncation, dùng css line-clamp-2 => dài quá hiện ...
+
+
+```bash
+yarn add @tailwindcss/line-clamp
+```
