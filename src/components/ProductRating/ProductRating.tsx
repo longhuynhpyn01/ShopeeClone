@@ -1,3 +1,11 @@
+// Thuật toán Rating
+// Cho rating = 3.4
+// 1 <= 3.4 => 100%
+// 2 <= 3.4 => 100%
+// 3 <= 3.4 => 100%
+// 4 > 3.4 => 40% (4 - 3.4 < 1)
+// 5 > 3.4 => 0% (5 - 3.4 > 1)
+
 export default function ProductRating({
   rating,
   activeClassname = "h-3 w-3 fill-yellow-300 text-yellow-300",

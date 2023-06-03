@@ -1,11 +1,11 @@
 // import { createRoutesFromChildren } from "react-router-dom";
-// import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 // import categoryApi from "src/apis/category.api";
-// import productApi from "src/apis/product.api";
+import productApi from "src/apis/product.api";
 import Pagination from "src/components/Pagination";
 import useQueryConfig from "src/hooks/useQueryConfig";
+import { ProductListConfig } from "src/types/product.type";
 
-// import { ProductListConfig } from "src/types/product.type";
 import AsideFilter from "./components/AsideFilter";
 import Product from "./components/Product/Product";
 import SortProductList from "./components/SortProductList";
@@ -13,14 +13,15 @@ import SortProductList from "./components/SortProductList";
 export default function ProductList() {
   const queryConfig = useQueryConfig();
 
-  // const { data: productsData } = useQuery({
-  //   queryKey: ["products", queryConfig],
-  //   queryFn: () => {
-  //     return productApi.getProducts(queryConfig as ProductListConfig);
-  //   },
-  //   keepPreviousData: true,
-  //   staleTime: 3 * 60 * 1000
-  // });
+  const { data: productsData } = useQuery({
+    queryKey: ["products", queryConfig], // queryConfig như dependencies của useEffect
+    queryFn: () => {
+      return productApi.getProducts(queryConfig as ProductListConfig);
+    },
+    keepPreviousData: true,
+    // thời gian data cũ là 3 phút
+    staleTime: 3 * 60 * 1000
+  });
 
   // const { data: categoriesData } = useQuery({
   //   queryKey: ["categories"],
@@ -29,7 +30,9 @@ export default function ProductList() {
   //   }
   // });
   const categoriesData = { data: { data: null } };
-  const productsData = { data: { data: { products: [], pagination: { page_size: 3 } } } };
+
+  console.log("queryConfig:", queryConfig);
+  console.log("productsData:", productsData);
 
   return (
     <div className="bg-gray-200 py-6">

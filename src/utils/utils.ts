@@ -26,10 +26,12 @@ export function isAxiosExpiredTokenError<UnauthorizedError>(error: unknown): err
   );
 }
 
+// format cho giá tại product card
 export function formatCurrency(currency: number) {
   return new Intl.NumberFormat("de-DE").format(currency);
 }
 
+// format cho số lượng bán tại product card => hiển thị k (nghìn), m (triệu), b (tỉ), t (nghìn tỉ)
 export function formatNumberToSocialStyle(value: number) {
   return new Intl.NumberFormat("en", {
     notation: "compact",
