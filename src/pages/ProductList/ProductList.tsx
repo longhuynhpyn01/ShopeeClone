@@ -1,6 +1,5 @@
-// import { createRoutesFromChildren } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-// import categoryApi from "src/apis/category.api";
+import categoryApi from "src/apis/category.api";
 import productApi from "src/apis/product.api";
 import Pagination from "src/components/Pagination";
 import useQueryConfig from "src/hooks/useQueryConfig";
@@ -24,16 +23,15 @@ export default function ProductList() {
     staleTime: 3 * 60 * 1000
   });
 
-  // const { data: categoriesData } = useQuery({
-  //   queryKey: ["categories"],
-  //   queryFn: () => {
-  //     return categoryApi.getCategories();
-  //   }
-  // });
-  const categoriesData = { data: { data: null } };
+  const { data: categoriesData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => {
+      return categoryApi.getCategories();
+    }
+  });
 
   console.log("queryConfig:", queryConfig);
-  console.log("productsData:", productsData);
+  console.log("categoriesData:", categoriesData);
 
   return (
     <div className="bg-gray-200 py-6">

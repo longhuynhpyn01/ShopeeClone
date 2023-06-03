@@ -17,34 +17,36 @@ export default function SortProductList({ queryConfig, pageSize }: Props) {
   const { sort_by = sortBy.createdAt, order } = queryConfig;
   const navigate = useNavigate();
 
+  // loại bỏ giá trị undefined
   const isActiveSortBy = (sortByValue: Exclude<ProductListConfig["sort_by"], undefined>) => {
     return sort_by === sortByValue;
   };
 
   const handleSort = (sortByValue: Exclude<ProductListConfig["sort_by"], undefined>) => {
-    // navigate({
-    //   pathname: path.home,
-    //   search: createSearchParams(
-    //     omit(
-    //       {
-    //         ...queryConfig,
-    //         sort_by: sortByValue
-    //       },
-    //       ["order"]
-    //     )
-    //   ).toString()
-    // });
+    navigate({
+      pathname: path.home,
+      // cần loại bỏ field Order ra sort những value không phải về giá
+      search: createSearchParams(
+        omit(
+          {
+            ...queryConfig,
+            sort_by: sortByValue
+          },
+          ["order"]
+        )
+      ).toString()
+    });
   };
 
   const handlePriceOrder = (orderValue: Exclude<ProductListConfig["order"], undefined>) => {
-    // navigate({
-    //   pathname: path.home,
-    //   search: createSearchParams({
-    //     ...queryConfig,
-    //     sort_by: sortBy.price,
-    //     order: orderValue
-    //   }).toString()
-    // });
+    navigate({
+      pathname: path.home,
+      search: createSearchParams({
+        ...queryConfig,
+        sort_by: sortBy.price,
+        order: orderValue
+      }).toString()
+    });
   };
 
   return (

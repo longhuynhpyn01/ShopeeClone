@@ -15,7 +15,7 @@ import { Schema, schema } from "src/utils/rules";
 
 import RatingStars from "../RatingStars";
 
-interface Props {
+interface AsideFilterProps {
   queryConfig: QueryConfig;
   categories: Category[];
 }
@@ -29,7 +29,7 @@ type FormData = NoUndefinedField<Pick<Schema, "price_max" | "price_min">>;
 
 const priceSchema = schema.pick(["price_min", "price_max"]);
 
-export default function AsideFilter({ queryConfig, categories }: Props) {
+export default function AsideFilter({ queryConfig, categories }: AsideFilterProps) {
   // const { t } = useTranslation("home");
   const { category } = queryConfig;
   const {
@@ -85,12 +85,13 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
           </g>
         </svg>
         {/* {t("aside filter.all categories")} */}
-        aside filter.all categories
+        Tất cả danh mục
       </Link>
       <div className="my-4 h-[1px] bg-gray-300" />
       <ul>
         {categories.map((categoryItem) => {
           const isActive = category === categoryItem._id;
+
           return (
             <li className="py-2 pl-2" key={categoryItem._id}>
               <Link
@@ -135,7 +136,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
           </g>
         </svg>
         {/* {t("aside filter.filter search")} */}
-        aside filter.filter search
+        BỘ LỌC TÌM KIẾM
       </Link>
       <div className="my-4 h-[1px] bg-gray-300" />
       <div className="my-5">
