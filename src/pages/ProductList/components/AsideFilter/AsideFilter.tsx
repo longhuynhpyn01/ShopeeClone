@@ -22,9 +22,9 @@ interface Props {
 
 type FormData = NoUndefinedField<Pick<Schema, "price_max" | "price_min">>;
 /**
- * Rule validate
- * Nếu có price_min và price_max thì price_max >= price_min
- * Còn không thì có price_min thì không có price_max và ngược lại
+ * Rule validate:
+ * Nếu có price_min và price_max thì price_max >= price_min.
+ * Còn không thì có price_min thì không có price_max và ngược lại.
  */
 
 const priceSchema = schema.pick(["price_min", "price_max"]);

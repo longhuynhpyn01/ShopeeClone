@@ -18,6 +18,7 @@ export default function ProductList() {
     queryFn: () => {
       return productApi.getProducts(queryConfig as ProductListConfig);
     },
+    // để cho data không mất đi, cho đỡ giật khi nhấn chuyển trang thì data set thành undefined rồi sau đó mới load dữ liệu
     keepPreviousData: true,
     // thời gian data cũ là 3 phút
     staleTime: 3 * 60 * 1000

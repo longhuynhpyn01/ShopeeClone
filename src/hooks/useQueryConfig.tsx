@@ -4,6 +4,10 @@ import { ProductListConfig } from "src/types/product.type";
 
 import useQueryParams from "./useQueryParams";
 
+/**
+ * Tạo kiểu `QueryConfig` để những component con có thể sử dụng một vài thuộc tính trong `ProductListConfig`
+ */
+
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string;
 };
@@ -23,7 +27,7 @@ export default function useQueryConfig() {
       rating_filter: queryParams.rating_filter,
       category: queryParams.category
     },
-    isUndefined
+    isUndefined // nhằm loại bỏ những field có giá trị là undefined
   );
   return queryConfig;
 }
