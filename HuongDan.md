@@ -638,10 +638,17 @@ export default App;
 ```bash
 yarn add @floating-ui/react-dom-interactions
 yarn add framer-motion
-```
 
 Cài thêm thư viện `@tailwindcss/line-clamp` để có thể dùng multi-line truncation, dùng css line-clamp-2 => dài quá hiện ...
 
 ```bash
 yarn add @tailwindcss/line-clamp
+```
+
+Cài thêm thư viện `dompurify` để loại bỏ JavaScript trong chuỗi string của chúng ta
+
+```bash
+yarn add dompurify
+yarn add -D @types/dompurify
+```
 ```

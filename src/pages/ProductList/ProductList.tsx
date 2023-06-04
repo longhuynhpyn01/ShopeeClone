@@ -30,9 +30,6 @@ export default function ProductList() {
     }
   });
 
-  console.log("queryConfig:", queryConfig);
-  console.log("categoriesData:", categoriesData);
-
   return (
     <div className="bg-gray-200 py-6">
       <div className="container">

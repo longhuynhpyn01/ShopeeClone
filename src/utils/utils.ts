@@ -4,13 +4,17 @@ import config from "src/constants/config";
 import HttpStatusCode from "src/constants/httpStatusCode.enum";
 import { ErrorResponse } from "src/types/utils.type";
 
-// Ép kiểu error thành AxiosError với <T> là generic type đầu vào do ta quy định
+/**
+ * Ép kiểu error thành AxiosError với <T> là generic type đầu vào do ta quy định
+ */
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
   // eslint-disable-next-line import/no-named-as-default-member
   return axios.isAxiosError(error);
 }
 
-// Check lỗi 422: UnprocessableEntity
+/**
+ * Check lỗi 422: UnprocessableEntity
+ */
 export function isAxiosUnprocessableEntityError<FormError>(error: unknown): error is AxiosError<FormError> {
   return isAxiosError(error) && error.response?.status === HttpStatusCode.UnprocessableEntity;
 }
@@ -26,12 +30,15 @@ export function isAxiosExpiredTokenError<UnauthorizedError>(error: unknown): err
   );
 }
 
-// format cho giá tại product card
+/**
+ * Format cho giá tại product card
+ */
 export function formatCurrency(currency: number) {
   return new Intl.NumberFormat("de-DE").format(currency);
 }
-
-// format cho số lượng bán tại product card => hiển thị k (nghìn), m (triệu), b (tỉ), t (nghìn tỉ)
+/**
+ * Format cho số lượng bán tại product card => hiển thị k (nghìn), m (triệu), b (tỉ), t (nghìn tỉ)
+ */
 export function formatNumberToSocialStyle(value: number) {
   return new Intl.NumberFormat("en", {
     notation: "compact",
@@ -42,6 +49,9 @@ export function formatNumberToSocialStyle(value: number) {
     .toLowerCase();
 }
 
+/**
+ * Hàm tính toán tỉ lệ giảm dựa vào 2 tham số là `original` và `sale`
+ */
 export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + "%";
 
 const removeSpecialCharacter = (str: string) =>
