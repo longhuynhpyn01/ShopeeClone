@@ -12,6 +12,9 @@ type FormData = Pick<Schema, "name">;
 
 const nameSchema = schema.pick(["name"]);
 
+/**
+ * Custom hook để tìm kiếm sản phẩm
+ */
 export default function useSearchProducts() {
   const queryConfig = useQueryConfig();
 
@@ -24,6 +27,7 @@ export default function useSearchProducts() {
   const navigate = useNavigate();
 
   const onSubmitSearch = handleSubmit((data) => {
+    // omit trong trường hợp có order vê giá thì loại bỏ thêm cả sort_by (để reset về mới nhất)
     const config = queryConfig.order
       ? omit(
           {
@@ -36,6 +40,7 @@ export default function useSearchProducts() {
           ...queryConfig,
           name: data.name
         };
+
     navigate({
       pathname: path.home,
       search: createSearchParams(config).toString()

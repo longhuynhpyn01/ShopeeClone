@@ -12,6 +12,9 @@ export type QueryConfig = {
   [key in keyof ProductListConfig]: string;
 };
 
+/**
+ * Custom hook để lưu những trường cần query
+ */
 export default function useQueryConfig() {
   const queryParams: QueryConfig = useQueryParams();
   const queryConfig: QueryConfig = omitBy(

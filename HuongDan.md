@@ -635,7 +635,7 @@ export default App;
 - React Popper ([www.popper.js.org/react-popper](https://popper.js.org/react-popper)) phiên bản cũ của Floating UI
 - Heroicons ([www.heroicons.com](https://heroicons.com)): lấy những icon của tailwind css
 
-```bash
+````bash
 yarn add @floating-ui/react-dom-interactions
 yarn add framer-motion
 
@@ -643,7 +643,7 @@ Cài thêm thư viện `@tailwindcss/line-clamp` để có thể dùng multi-lin
 
 ```bash
 yarn add @tailwindcss/line-clamp
-```
+````
 
 Cài thêm thư viện `dompurify` để loại bỏ JavaScript trong chuỗi string của chúng ta
 
@@ -651,4 +651,30 @@ Cài thêm thư viện `dompurify` để loại bỏ JavaScript trong chuỗi st
 yarn add dompurify
 yarn add -D @types/dompurify
 ```
+
+````
+
+
+## Ghi chú code
+
+Code xóa các ký tự đặc biệt trên bàn phím
+
+```ts
+export const removeSpecialCharacter = (str: string) =>
+  // eslint-disable-next-line no-useless-escape
+  str.replace(
+    /!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g,
+    ''
+  )
+````
+
+Sữa lỗi Tailwindcss Extension không gợi ý class
+
+Các bạn thêm đoạn code này vào `settings.json` của VS Code
+
+```json
+{
+  //...
+  "tailwindCSS.experimental.classRegex": ["[a-zA-Z]*class[a-zA-Z]*='([^']+)'"]
+}
 ```
