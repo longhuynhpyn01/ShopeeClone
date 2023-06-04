@@ -7,11 +7,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import DOMPurify from "dompurify";
 // import { convert } from "html-to-text";
 import productApi from "src/apis/product.api";
-// import purchaseApi from "src/apis/purchase.api";
+import purchaseApi from "src/apis/purchase.api";
 import ProductRating from "src/components/ProductRating";
 import QuantityController from "src/components/QuantityController";
 import path from "src/constants/path";
-// import { purchasesStatus } from "src/constants/purchase";
+import { purchasesStatus } from "src/constants/purchase";
 import { ProductListConfig, Product as ProductType } from "src/types/product.type";
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from "src/utils/utils";
 
@@ -40,6 +40,7 @@ export default function ProductDetail() {
     [product, currentIndexImages]
   ); // list danh sách ảnh sản phẩm cần hiển thị
 
+  // query config để tìm những product cùng category
   const queryConfig: ProductListConfig = { limit: "20", page: "1", category: product?.category._id };
 
   const { data: productsData } = useQuery({
@@ -47,11 +48,13 @@ export default function ProductDetail() {
     queryFn: () => {
       return productApi.getProducts(queryConfig);
     },
+    // thời gian data đã cũ là 3 phút để không gọi lại khi đã gọi lần trước (nên thêm field này ở ProductList)
     staleTime: 3 * 60 * 1000,
+    // chỉ gọi khi product có data
     enabled: Boolean(product)
   });
 
-  // const addToCartMutation = useMutation(purchaseApi.addToCart);
+  const addToCartMutation = useMutation(purchaseApi.addToCart);
 
   useEffect(() => {
     // nếu product tồn tại thì lấy ảnh đầu tiên làm ảnh active
@@ -117,15 +120,18 @@ export default function ProductDetail() {
   };
 
   const addToCart = () => {
-    // addToCartMutation.mutate(
-    //   { buy_count: buyCount, product_id: product?._id as string },
-    //   {
-    //     onSuccess: (data) => {
-    //       toast.success(data.data.message, { autoClose: 1000 });
-    //       queryClient.invalidateQueries({ queryKey: ["purchases", { status: purchasesStatus.inCart }] });
-    //     }
-    //   }
-    // );
+    addToCartMutation.mutate(
+      { buy_count: buyCount, product_id: product?._id as string },
+      {
+        onSuccess: (data) => {
+          console.log("data:", data);
+          toast.success(data.data.message, { autoClose: 1000 });
+          // khi add to cart thành công thì sẽ thông báo addToCartMutation đã cũ rồi => cần cập nhật lại => queryFn chạy lại
+          // biến exact giúp xác định chính xác queryKey bao gồm cả dependencies là { status }
+          queryClient.invalidateQueries({ queryKey: ["purchases", { status: purchasesStatus.inCart }] });
+        }
+      }
+    );
   };
 
   const buyNow = async () => {
@@ -141,9 +147,9 @@ export default function ProductDetail() {
   if (!product) return null;
 
   return (
-    <div className="bg-gray-200 py-6">
+    <div className="py-6 bg-gray-200">
       <div className="container">
-        <div className="bg-white p-4 shadow">
+        <div className="p-4 bg-white shadow">
           <div className="grid grid-cols-12 gap-9">
             <div className="col-span-5">
               <div
@@ -154,13 +160,13 @@ export default function ProductDetail() {
                 <img
                   src={activeImage}
                   alt={product.name}
-                  className="absolute top-0 left-0 h-full w-full bg-white object-cover"
+                  className="absolute top-0 left-0 object-cover w-full h-full bg-white"
                   ref={imageRef}
                 />
               </div>
-              <div className="relative mt-4 grid grid-cols-5 gap-1">
+              <div className="relative grid grid-cols-5 gap-1 mt-4">
                 <button
-                  className="absolute left-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white"
+                  className="absolute left-0 z-10 w-5 text-white -translate-y-1/2 top-1/2 h-9 bg-black/20"
                   onClick={prev}
                 >
                   <svg
@@ -169,7 +175,7 @@ export default function ProductDetail() {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="h-5 w-5"
+                    className="w-5 h-5"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                   </svg>
@@ -183,7 +189,7 @@ export default function ProductDetail() {
                       <img
                         src={img}
                         alt={product.name}
-                        className="absolute top-0 left-0 h-full w-full cursor-pointer bg-white object-cover"
+                        className="absolute top-0 left-0 object-cover w-full h-full bg-white cursor-pointer"
                       />
                       {isActive && <div className="absolute inset-0 border-2 border-orange" />}
                     </div>
@@ -191,7 +197,7 @@ export default function ProductDetail() {
                 })}
 
                 <button
-                  className="absolute right-0 top-1/2 z-10 h-9 w-5 -translate-y-1/2 bg-black/20 text-white"
+                  className="absolute right-0 z-10 w-5 text-white -translate-y-1/2 top-1/2 h-9 bg-black/20"
                   onClick={next}
                 >
                   <svg
@@ -200,7 +206,7 @@ export default function ProductDetail() {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="h-5 w-5"
+                    className="w-5 h-5"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                   </svg>
@@ -209,7 +215,7 @@ export default function ProductDetail() {
             </div>
             <div className="col-span-7">
               <h1 className="text-xl font-medium uppercase">{product.name}</h1>
-              <div className="mt-8 flex items-center">
+              <div className="flex items-center mt-8">
                 <div className="flex items-center">
                   <span className="mr-1 border-b border-b-orange text-orange">{product.rating}</span>
                   <ProductRating
@@ -224,15 +230,15 @@ export default function ProductDetail() {
                   <span className="ml-1 text-gray-500">Đã bán</span>
                 </div>
               </div>
-              <div className="mt-8 flex items-center bg-gray-50 px-5 py-4">
+              <div className="flex items-center px-5 py-4 mt-8 bg-gray-50">
                 <div className="text-gray-500 line-through">₫{formatCurrency(product.price_before_discount)}</div>
                 <div className="ml-3 text-3xl font-medium text-orange">₫{formatCurrency(product.price)}</div>
                 <div className="ml-4 rounded-sm bg-orange px-1 py-[2px] text-xs font-semibold uppercase text-white">
                   {rateSale(product.price_before_discount, product.price)} giảm
                 </div>
               </div>
-              <div className="mt-8 flex items-center">
-                <div className="capitalize text-gray-500">Số lượng</div>
+              <div className="flex items-center mt-8">
+                <div className="text-gray-500 capitalize">Số lượng</div>
                 <QuantityController
                   onDecrease={handleBuyCount}
                   onIncrease={handleBuyCount}
@@ -245,10 +251,10 @@ export default function ProductDetail() {
                   {product.quantity} {"Available products"}
                 </div>
               </div>
-              <div className="mt-8 flex items-center">
+              <div className="flex items-center mt-8">
                 <button
                   onClick={addToCart}
-                  className="flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5"
+                  className="flex items-center justify-center h-12 px-5 capitalize border rounded-sm shadow-sm border-orange bg-orange/10 text-orange hover:bg-orange/5"
                 >
                   <svg
                     enableBackground="new 0 0 15 15"
@@ -288,8 +294,8 @@ export default function ProductDetail() {
       </div>
       <div className="mt-8">
         <div className="container">
-          <div className=" bg-white p-4 shadow">
-            <div className="rounded bg-gray-50 p-4 text-lg capitalize text-slate-700">Mô tả sản phẩm</div>
+          <div className="p-4 bg-white shadow ">
+            <div className="p-4 text-lg capitalize rounded bg-gray-50 text-slate-700">Mô tả sản phẩm</div>
             <div className="mx-4 mt-12 mb-4 text-sm leading-loose">
               <div
                 dangerouslySetInnerHTML={{
@@ -303,9 +309,9 @@ export default function ProductDetail() {
 
       <div className="mt-8">
         <div className="container">
-          <div className="uppercase text-gray-400">CÓ THỂ BẠN CŨNG THÍCH</div>
+          <div className="text-gray-400 uppercase">CÓ THỂ BẠN CŨNG THÍCH</div>
           {productsData && (
-            <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            <div className="grid grid-cols-2 gap-3 mt-6 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
               {productsData.data.data.products.map((product) => (
                 <div className="col-span-1" key={product._id}>
                   <Product product={product} />

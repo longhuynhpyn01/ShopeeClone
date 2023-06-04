@@ -1,23 +1,22 @@
-// import { useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 
-// import { useQuery } from "@tanstack/react-query";
-// import purchaseApi from "src/apis/purchase.api";
+import { useQuery } from "@tanstack/react-query";
+import purchaseApi from "src/apis/purchase.api";
 import noproduct from "src/assets/images/no-product.png";
-// import { AppContext } from "src/contexts/app.context";
+import path from "src/constants/path";
+import { purchasesStatus } from "src/constants/purchase";
+import { AppContext } from "src/contexts/app.context";
 import useSearchProducts from "src/hooks/useSearchProducts";
+import { formatCurrency } from "src/utils/utils";
 
-// import path from "src/constants/path";
-// import { purchasesStatus } from "src/constants/purchase";
-// import useSearchProducts from "src/hooks/useSearchProducts";
-// import { formatCurrency } from "src/utils/utils";
 import NavHeader from "../NavHeader";
 import Popover from "../Popover";
 
-// const MAX_PURCHASES = 5;
+const MAX_PURCHASES = 5;
 
 export default function Header() {
-  // const { isAuthenticated } = useContext(AppContext);
+  const { isAuthenticated } = useContext(AppContext);
   const { onSubmitSearch, register } = useSearchProducts();
 
   // Khi chúng ta chuyển trang thì Header chỉ bị re-render
@@ -25,13 +24,14 @@ export default function Header() {
   // (Tất nhiên là trừ trường hợp logout rồi nhảy sang RegisterLayout rồi nhảy vào lại)
   // Nên các query này sẽ không bị inactive => Không bị gọi lại => không cần thiết phải set stale: Infinity
 
-  // const { data: purchasesInCartData } = useQuery({
-  //   queryKey: ["purchases", { status: purchasesStatus.inCart }],
-  //   queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart }),
-  //   enabled: isAuthenticated
-  // });
+  const { data: purchasesInCartData } = useQuery({
+    queryKey: ["purchases", { status: purchasesStatus.inCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart }),
+    // useQuery chỉ chạy khi user đã đăng nhập
+    enabled: isAuthenticated
+  });
 
-  // const purchasesInCart = purchasesInCartData?.data.data;
+  const purchasesInCart = purchasesInCartData?.data.data;
 
   return (
     <div className="bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white">
@@ -75,7 +75,7 @@ export default function Header() {
             <Popover
               renderPopover={
                 <div className="relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md">
-                  {/* {purchasesInCart && purchasesInCart.length > 0 ? (
+                  {purchasesInCart && purchasesInCart.length > 0 ? (
                     <div className="p-2">
                       <div className="text-gray-400 capitalize">Sản phẩm mới thêm</div>
                       <div className="mt-5">
@@ -110,12 +110,12 @@ export default function Header() {
                         </Link>
                       </div>
                     </div>
-                  ) : ( */}
-                  <div className="flex h-[300px] w-[300px] flex-col items-center justify-center p-2">
-                    <img src={noproduct} alt="no purchase" className="w-24 h-24" />
-                    <div className="mt-3 capitalize">Chưa có sản phẩm</div>
-                  </div>
-                  {/* )} */}
+                  ) : (
+                    <div className="flex h-[300px] w-[300px] flex-col items-center justify-center p-2">
+                      <img src={noproduct} alt="no purchase" className="w-24 h-24" />
+                      <div className="mt-3 capitalize">Chưa có sản phẩm</div>
+                    </div>
+                  )}
                 </div>
               }
             >
@@ -134,11 +134,11 @@ export default function Header() {
                     d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
                   />
                 </svg>
-                {/* {purchasesInCart && purchasesInCart.length > 0 && (
-                  <span className="absolute top-[-5px] left-[17px] rounded-full bg-white px-[9px] py-[1px] text-xs text-orange ">
+                {purchasesInCart && purchasesInCart.length > 0 && (
+                  <span className="absolute top-[-5px] left-[17px] rounded-full bg-white px-[9px] py-[1px] text-xs text-orange">
                     {purchasesInCart?.length}
                   </span>
-                )} */}
+                )}
               </Link>
             </Popover>
           </div>

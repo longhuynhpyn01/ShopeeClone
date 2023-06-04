@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import InputNumber, { InputNumberProps } from "../InputNumber";
 
+// Kế thừa InputNumberProps
 interface Props extends InputNumberProps {
   max?: number;
   onIncrease?: (value: number) => void;
@@ -58,6 +59,7 @@ export default function QuantityController({
     setLocalValue(_value);
   };
 
+  // chạy khi người dùng blur bỏ chuột ra
   const handleBlur = (event: React.FocusEvent<HTMLInputElement, Element>) => {
     onFocusOut && onFocusOut(Number(event.target.value));
   };
@@ -65,7 +67,7 @@ export default function QuantityController({
   return (
     <div className={"flex items-center " + classNameWrapper}>
       <button
-        className="flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600"
+        className="flex items-center justify-center w-8 h-8 text-gray-600 border border-gray-300 rounded-l-sm"
         onClick={decrease}
       >
         <svg
@@ -74,7 +76,7 @@ export default function QuantityController({
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="h-4 w-4"
+          className="w-4 h-4"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
         </svg>
@@ -89,7 +91,7 @@ export default function QuantityController({
         {...rest}
       />
       <button
-        className="flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600"
+        className="flex items-center justify-center w-8 h-8 text-gray-600 border border-gray-300 rounded-r-sm"
         onClick={increase}
       >
         <svg
@@ -98,7 +100,7 @@ export default function QuantityController({
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="h-4 w-4"
+          className="w-4 h-4"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
