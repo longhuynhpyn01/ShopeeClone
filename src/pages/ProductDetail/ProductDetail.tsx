@@ -31,14 +31,14 @@ export default function ProductDetail() {
   const product = productDetailData?.data.data;
 
   const [buyCount, setBuyCount] = useState(1); // lưu số lượng chọn mua
-  const [currentIndexImages, setCurrentIndexImages] = useState([0, 5]);
+  const [currentIndexImages, setCurrentIndexImages] = useState([0, 5]); // lưu khoảng index 5 image liên tiếp cần hiển thị cho slice
   const [activeImage, setActiveImage] = useState(""); // lưu ảnh đang được active
-  const imageRef = useRef<HTMLImageElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null); // lưu ref để handle việc zoom ảnh
 
   const currentImages = useMemo(
     () => (product ? product.images.slice(...currentIndexImages) : []),
     [product, currentIndexImages]
-  ); // list danh sách ảnh sản phẩm
+  ); // list danh sách ảnh sản phẩm cần hiển thị
 
   const queryConfig: ProductListConfig = { limit: "20", page: "1", category: product?.category._id };
 
@@ -77,21 +77,33 @@ export default function ProductDetail() {
   };
 
   const handleZoom = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
+    const rect = event.currentTarget.getBoundingClientRect(); // lấy ra width, height của thẻ div
     const image = imageRef.current as HTMLImageElement;
-    const { naturalHeight, naturalWidth } = image;
+    const { naturalHeight, naturalWidth } = image; // lấy ra width và height nguyên bản của ảnh
+
+    // offsetX: vị trí x của con trỏ chuột trong element
+    // offsetY: vị trí y của con trỏ chuột trong element
+    // event.pageX: tọa độ x con trỏ chuột theo trang web (không thể âm)
+    // event.pageY: toạ độ y con trỏ chuột theo trang web (không thể âm)
+    // window.scrollX: tọa độ page scroll theo chiều x
+    // window.scrollY: tọa độ page scroll theo chiều y
+
     // Cách 1: Lấy offsetX, offsetY đơn giản khi chúng ta đã xử lý được bubble event
+    // Thêm class pointer-events-none cho thẻ img để không nhấn vào img được
     // const { offsetX, offsetY } = event.nativeEvent
 
     // Cách 2: Lấy offsetX, offsetY khi chúng ta không xử lý được bubble event
     const offsetX = event.pageX - (rect.x + window.scrollX);
     const offsetY = event.pageY - (rect.y + window.scrollY);
 
-    const top = offsetY * (1 - naturalHeight / rect.height);
-    const left = offsetX * (1 - naturalWidth / rect.width);
-    image.style.width = naturalWidth + "px";
+    // Theo nguyên lí thì khi hover ảnh xuống dưới thì top sẽ là giá trị âm để zoom lên trên
+    // left sẽ là giá trị âm để zoom sang trái
+    const top = offsetY * (1 - naturalHeight / rect.height); // công thức đặt position cho top
+    const left = offsetX * (1 - naturalWidth / rect.width); // công thức đặt position cho left
+
+    image.style.width = naturalWidth + "px"; // set lại width thành value nguyên bản, nhớ css thẻ div cha img là overflow-hidden
     image.style.height = naturalHeight + "px";
-    image.style.maxWidth = "unset";
+    image.style.maxWidth = "unset"; // để ngăn chặn viện maxWidth là 100% theo style
     image.style.top = top + "px";
     image.style.left = left + "px";
   };
@@ -142,7 +154,7 @@ export default function ProductDetail() {
                 <img
                   src={activeImage}
                   alt={product.name}
-                  className=" absolute top-0 left-0 h-full w-full bg-white object-cover"
+                  className="absolute top-0 left-0 h-full w-full bg-white object-cover"
                   ref={imageRef}
                 />
               </div>
