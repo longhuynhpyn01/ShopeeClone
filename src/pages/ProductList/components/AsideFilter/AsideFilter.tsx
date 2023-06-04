@@ -4,7 +4,7 @@ import { Link, createSearchParams, useNavigate } from "react-router-dom";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
-// import omit from "lodash/omit";
+import omit from "lodash/omit";
 import Button from "src/components/Button";
 import InputNumber from "src/components/InputNumber";
 import path from "src/constants/path";
@@ -59,10 +59,10 @@ export default function AsideFilter({ queryConfig, categories }: AsideFilterProp
   });
 
   const handleRemoveAll = () => {
-    // navigate({
-    //   pathname: path.home,
-    //   search: createSearchParams(omit(queryConfig, ["price_min", "price_max", "rating_filter", "category"])).toString()
-    // });
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(omit(queryConfig, ["price_min", "price_max", "rating_filter", "category"])).toString()
+    });
   };
 
   return (

@@ -21,13 +21,13 @@ export default function RatingStars({ queryConfig }: Props) {
   const navigate = useNavigate();
 
   const handleFilterStar = (ratingFilter: number) => {
-    // navigate({
-    //   pathname: path.home,
-    //   search: createSearchParams({
-    //     ...queryConfig,
-    //     rating_filter: String(ratingFilter)
-    //   }).toString()
-    // });
+    navigate({
+      pathname: path.home,
+      search: createSearchParams({
+        ...queryConfig,
+        rating_filter: String(ratingFilter)
+      }).toString()
+    });
   };
 
   return (
@@ -46,6 +46,7 @@ export default function RatingStars({ queryConfig }: Props) {
               {Array(5)
                 .fill(0)
                 .map((_, indexStar) => {
+                  // thỏa mãn in màu vàng
                   if (indexStar < 5 - index) {
                     return (
                       <svg viewBox="0 0 9.5 8" className="mr-1 h-4 w-4" key={indexStar}>
@@ -75,6 +76,7 @@ export default function RatingStars({ queryConfig }: Props) {
                       </svg>
                     );
                   }
+
                   return (
                     <svg viewBox="0 0 30 30" className="mr-1 h-4 w-4" key={indexStar}>
                       <defs>

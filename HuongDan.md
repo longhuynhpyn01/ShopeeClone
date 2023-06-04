@@ -1,16 +1,14 @@
 # Dự án Shopee Clone
 
+Figma: [Thuật toán zoom](https://www.figma.com/file/ksSZMCzR1i1aTPUZp95xAs/Thu%E1%BA%ADt-to%C3%A1n-zoom?node-id=0%3A1&t=sD6WslI7mJZeAN1z-1)
 
 ## Cài đặt package cho dự án Vite React TS
 
-
 Chạy câu lệnh dưới đây để tạo project bằng vite
-
 
 ```bash
 yarn create vite
 ```
-
 
 Thay đổi port bằng cách thêm code sau vào file `Shopee/vite.config.ts`
 
@@ -20,9 +18,8 @@ export default defineConfig({
   server: {
     port: 3000
   }
-})
+});
 ```
-
 
 Config tại file `tsconfig.json`
 
@@ -54,7 +51,6 @@ Config tại file `tsconfig.json`
   "references": [{ "path": "./tsconfig.node.json" }]
 }
 ```
-
 
 ### Cài các depedency
 
@@ -98,34 +94,34 @@ Tạo file `.eslintrc.cjs` tại thư mục root
 
 ```js
 /* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path')
+const path = require("path");
 
 module.exports = {
   extends: [
     // Chúng ta sẽ dùng các rule mặc định từ các plugin mà chúng ta đã cài.
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:import/recommended',
-    'plugin:import/typescript',
-    'plugin:jsx-a11y/recommended',
-    'plugin:@typescript-eslint/recommended',
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:jsx-a11y/recommended",
+    "plugin:@typescript-eslint/recommended",
     // Disable các rule mà eslint xung đột với prettier.
     // Để cái này ở dưới để nó override các rule phía trên!.
-    'eslint-config-prettier',
-    'prettier'
+    "eslint-config-prettier",
+    "prettier"
   ],
-  plugins: ['prettier'],
+  plugins: ["prettier"],
   settings: {
     react: {
       // Nói eslint-plugin-react tự động biết version của React.
-      version: 'detect'
+      version: "detect"
     },
     // Nói ESLint cách xử lý các import
-    'import/resolver': {
+    "import/resolver": {
       node: {
-        paths: [path.resolve(__dirname, '')],
-        extensions: ['.js', '.jsx', '.ts', '.tsx']
+        paths: [path.resolve(__dirname, "")],
+        extensions: [".js", ".jsx", ".ts", ".tsx"]
       }
     }
   },
@@ -134,18 +130,18 @@ module.exports = {
   },
   rules: {
     // Tắt rule yêu cầu import React trong file jsx
-    'react/react-in-jsx-scope': 'off',
+    "react/react-in-jsx-scope": "off",
     // Cảnh báo khi thẻ <a target='_blank'> mà không có rel="noreferrer"
-    'react/jsx-no-target-blank': 'warn',
+    "react/jsx-no-target-blank": "warn",
     // Tăng cường một số rule prettier (copy từ file .prettierrc qua)
-    'prettier/prettier': [
-      'warn',
+    "prettier/prettier": [
+      "warn",
       {
-        arrowParens: 'always',
+        arrowParens: "always",
         semi: false,
-        trailingComma: 'none',
+        trailingComma: "none",
         tabWidth: 2,
-        endOfLine: 'auto',
+        endOfLine: "auto",
         useTabs: false,
         singleQuote: true,
         printWidth: 120,
@@ -153,7 +149,7 @@ module.exports = {
       }
     ]
   }
-}
+};
 ```
 
 Tạo file `.eslintignore`
@@ -226,12 +222,12 @@ Cấu hình file config
 ```js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {}
   },
   plugins: []
-}
+};
 ```
 
 Thêm vào file `src/index.css`
@@ -253,9 +249,9 @@ yarn add -D @types/node
 File `vite.config.ts`
 
 ```ts
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import react from "@vitejs/plugin-react";
+import path from "path";
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -268,10 +264,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      src: path.resolve(__dirname, './src')
+      src: path.resolve(__dirname, "./src")
     }
   }
-})
+});
 ```
 
 ### Cấu hình React Router
@@ -481,9 +477,7 @@ export const schema = yup.object({
 });
 
 export type Schema = yup.InferType<typeof schema>;
-
 ```
-
 
 ### Config lại trong tailwind để xoá
 
@@ -525,7 +519,6 @@ module.exports = {
   ]
 };
 ```
-
 
 ### Thêm axios, react-query
 
@@ -602,15 +595,12 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 
 Cài package `lodash` và `@types/lodash`
 
-
 ```bash
 yarn add lodash
 yarn add @types/lodash
 ```
 
-
 ### Cài thêm react-toastify
-
 
 ```bash
 yarn add react-toastify
@@ -645,14 +635,12 @@ export default App;
 - React Popper ([www.popper.js.org/react-popper](https://popper.js.org/react-popper)) phiên bản cũ của Floating UI
 - Heroicons ([www.heroicons.com](https://heroicons.com)): lấy những icon của tailwind css
 
-
 ```bash
 yarn add @floating-ui/react-dom-interactions
 yarn add framer-motion
 ```
 
 Cài thêm thư viện `@tailwindcss/line-clamp` để có thể dùng multi-line truncation, dùng css line-clamp-2 => dài quá hiện ...
-
 
 ```bash
 yarn add @tailwindcss/line-clamp
