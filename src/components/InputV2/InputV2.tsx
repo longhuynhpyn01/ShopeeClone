@@ -1,6 +1,8 @@
 import { InputHTMLAttributes, useState } from "react";
 import { FieldPath, FieldValues, UseControllerProps, useController } from "react-hook-form";
 
+// Interface khi dùng với nhiều kiểu khác thì phải extends rồi khai báo {}
+// type khi dùng thì khai báo = { } & otherType
 export type InputNumberProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>

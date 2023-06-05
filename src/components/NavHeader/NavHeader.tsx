@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import authApi from "src/apis/auth.api";
 import path from "src/constants/path";
-// import { purchasesStatus } from "src/constants/purchase";
+import { purchasesStatus } from "src/constants/purchase";
 import { AppContext } from "src/contexts/app.context";
 // import { locales } from "src/i18n/i18n";
 import { getAvatarUrl } from "src/utils/utils";
@@ -17,13 +17,14 @@ export default function NavHeader() {
   // const currentLanguage = locales[i18n.language as keyof typeof locales];
 
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext);
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const logoutMutation = useMutation({
     mutationFn: authApi.logout,
     onSuccess: () => {
       setIsAuthenticated(false);
       setProfile(null);
-      // queryClient.removeQueries({ queryKey: ["purchases", { status: purchasesStatus.inCart }] });
+      // Khi logout thì cần remove purchasesInCartData để không hiện cart
+      queryClient.removeQueries({ queryKey: ["purchases", { status: purchasesStatus.inCart }] });
     }
   });
 
