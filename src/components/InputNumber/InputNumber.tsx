@@ -20,6 +20,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
   },
   ref
 ) {
+  // cho trường hợp người dùng không truyền value, onChange vào thì vẫn hoạt động đúng
   const [localValue, setLocalValue] = useState<string>(value as string);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -124,7 +124,6 @@ export default function ProductDetail() {
       { buy_count: buyCount, product_id: product?._id as string },
       {
         onSuccess: (data) => {
-          console.log("data:", data);
           toast.success(data.data.message, { autoClose: 1000 });
           // khi add to cart thành công thì sẽ thông báo addToCartMutation đã cũ rồi => cần cập nhật lại => queryFn chạy lại
           // biến exact giúp xác định chính xác queryKey bao gồm cả dependencies là { status }

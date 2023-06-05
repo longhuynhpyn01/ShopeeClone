@@ -22,6 +22,7 @@ export default function QuantityController({
   value,
   ...rest
 }: Props) {
+  // cho trường hợp người dùng không truyền value, onChange vào thì vẫn hoạt động đúng
   const [localValue, setLocalValue] = useState<number>(Number(value || 0));
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
