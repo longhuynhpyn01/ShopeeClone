@@ -652,8 +652,6 @@ yarn add dompurify
 yarn add -D @types/dompurify
 ```
 
-````
-
 
 ## Ghi chú code
 
@@ -677,4 +675,14 @@ Các bạn thêm đoạn code này vào `settings.json` của VS Code
   //...
   "tailwindCSS.experimental.classRegex": ["[a-zA-Z]*class[a-zA-Z]*='([^']+)'"]
 }
+```
+
+### Thư viện immer để đơn giản hóa việc change state
+
+Redux Toolkit có sử dụng thư viện này
+Cách nhanh nhất để change `extendedPurchases` mà không cần tìm hàm map để tìm index thì dùng `produce` của `immer` ở trong `Cart`
+
+
+```bash
+yarn add immer
 ```

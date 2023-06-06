@@ -60,7 +60,7 @@ export default function QuantityController({
     setLocalValue(_value);
   };
 
-  // chạy khi người dùng blur bỏ chuột ra
+  // chạy khi người dùng blur bỏ chuột ra ở trong Cart page
   const handleBlur = (event: React.FocusEvent<HTMLInputElement, Element>) => {
     onFocusOut && onFocusOut(Number(event.target.value));
   };

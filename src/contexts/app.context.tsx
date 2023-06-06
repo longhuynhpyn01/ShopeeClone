@@ -29,6 +29,7 @@ export const AppContext = createContext<AppContextInterface>(initialAppContext);
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialAppContext.isAuthenticated);
+  // lưu trạng thái mở roognj của những sp trong cart (thêm thuộc tính disabled và checked)
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>(initialAppContext.extendedPurchases);
   const [profile, setProfile] = useState<User | null>(initialAppContext.profile);
 
