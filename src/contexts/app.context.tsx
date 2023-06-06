@@ -29,7 +29,8 @@ export const AppContext = createContext<AppContextInterface>(initialAppContext);
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialAppContext.isAuthenticated);
-  // lưu trạng thái mở roognj của những sp trong cart (thêm thuộc tính disabled và checked)
+  // Lưu trạng thái mở rộng của những sp trong cart (thêm thuộc tính disabled và checked)
+  // Lưu biến này ở trong context để state không bị biến mất (giá trị checked trong Cart page) khi chuyển trang (ngoại trừ việc reload page)
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>(initialAppContext.extendedPurchases);
   const [profile, setProfile] = useState<User | null>(initialAppContext.profile);
 

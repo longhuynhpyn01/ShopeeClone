@@ -134,13 +134,15 @@ export default function ProductDetail() {
   };
 
   const buyNow = async () => {
-    // const res = await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string });
-    // const purchase = res.data.data;
-    // navigate(path.cart, {
-    //   state: {
-    //     purchaseId: purchase._id
-    //   }
-    // });
+    const res = await addToCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string });
+    const purchase = res.data.data;
+
+    // navigate sang trang cart (giỏ hàng) đồng thời truyền theo purchaseId cần mua
+    navigate(path.cart, {
+      state: {
+        purchaseId: purchase._id
+      }
+    });
   };
 
   if (!product) return null;

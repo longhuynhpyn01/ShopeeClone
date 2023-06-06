@@ -46,11 +46,13 @@ export default function Cart() {
     }
   });
 
+  // Dùng để lấy ra state lưu trạng thái (id sản phẩm cần mua để checked) trước khi nhấn Buy Now ở ProductCard tại trang ProductDetail
   const location = useLocation();
+  // Lưu id vừa nhận được từ state của location
   const choosenPurchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId;
-  console.log("location:", location);
-  console.log("location.state:", location.state);
-  console.log("choosenPurchaseIdFromLocation:", choosenPurchaseIdFromLocation);
+
+  // Những biến dưới đây dùng useMemo để chúng khỏi tính toán lại nhiều lần bởi vì những hàm mutate thay đổi nhiều lần
+
   // Data purchase in cart
   const purchasesInCart = purchasesInCartData?.data.data;
   // Lưu trạng thái có check all hay không
@@ -80,8 +82,6 @@ export default function Cart() {
     setExtendedPurchases((prev) => {
       // Dùng keyBy của lodash để tạo Object từ Array với key là những giá trị của _id, còn value là dữ liệu tương ứng id đó
       const extendedPurchasesObject = keyBy(prev, "_id");
-      // console.log("extendedPurchasesObject:", extendedPurchasesObject);
-      // console.log("choosenPurchaseIdFromLocation:", choosenPurchaseIdFromLocation);
 
       return (
         purchasesInCart?.map((purchase) => {
@@ -91,6 +91,7 @@ export default function Cart() {
             ...purchase,
             disabled: false,
             // để khi refetch thì giữ giá trị của checked
+            // trường hợp được buyNow từ productDetail thì check dựa vào thêm biến isChoosenPurchaseFromLocation nữa
             checked: isChoosenPurchaseFromLocation || Boolean(extendedPurchasesObject[purchase._id]?.checked)
           };
         }) || []
@@ -99,6 +100,7 @@ export default function Cart() {
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [purchasesInCart, choosenPurchaseIdFromLocation]);
 
+  // Chạy useEffect để xoá purchaseId trong state (có được khi buyNow từ productDetail) khi reload lại trang
   useEffect(() => {
     return () => {
       history.replaceState(null, "");
@@ -138,7 +140,6 @@ export default function Cart() {
 
   // Xử lí khi nhấn increase / decrease QuantityInput
   const handleQuantity = (purchaseIndex: number, value: number, enable: boolean) => {
-    console.log(purchaseIndex, value, enable);
     if (enable) {
       const purchase = extendedPurchases[purchaseIndex];
       setExtendedPurchases(
