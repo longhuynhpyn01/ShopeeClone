@@ -1,5 +1,6 @@
 import { User } from "src/types/user.type";
 
+// Tạo EventTarget để không phải dùng reload khi token hết hạn sẽ tự reset state trong context
 export const LocalStorageEventTarget = new EventTarget();
 
 export const setAccessTokenToLS = (access_token: string) => {
@@ -14,8 +15,8 @@ export const clearLS = () => {
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
   localStorage.removeItem("profile");
-  const clearLSEvent = new Event("clearLS");
-  LocalStorageEventTarget.dispatchEvent(clearLSEvent);
+  const clearLSEvent = new Event("clearLS"); // Tạo event clearLS
+  LocalStorageEventTarget.dispatchEvent(clearLSEvent); // Xuất ra 1 event để bên App lắng nghe
 };
 
 export const getAccessTokenFromLS = () => localStorage.getItem("access_token") || "";

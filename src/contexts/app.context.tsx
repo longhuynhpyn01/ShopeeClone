@@ -34,6 +34,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>(initialAppContext.extendedPurchases);
   const [profile, setProfile] = useState<User | null>(initialAppContext.profile);
 
+  // Reset khi clear localstorage
   const reset = () => {
     setIsAuthenticated(false);
     setExtendedPurchases([]);

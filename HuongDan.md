@@ -652,7 +652,6 @@ yarn add dompurify
 yarn add -D @types/dompurify
 ```
 
-
 ## Ghi chú code
 
 Code xóa các ký tự đặc biệt trên bàn phím
@@ -660,11 +659,8 @@ Code xóa các ký tự đặc biệt trên bàn phím
 ```ts
 export const removeSpecialCharacter = (str: string) =>
   // eslint-disable-next-line no-useless-escape
-  str.replace(
-    /!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g,
-    ''
-  )
-````
+  str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, "");
+```
 
 Sữa lỗi Tailwindcss Extension không gợi ý class
 
@@ -682,7 +678,48 @@ Các bạn thêm đoạn code này vào `settings.json` của VS Code
 Redux Toolkit có sử dụng thư viện này
 Cách nhanh nhất để change `extendedPurchases` mà không cần tìm hàm map để tìm index thì dùng `produce` của `immer` ở trong `Cart`
 
-
 ```bash
 yarn add immer
+```
+
+### Sử dụng EventTarget
+
+Khi token hết hạn thì ta phải clear local storage, tuy nhiên khi này state trong Context vẫn chưa được xóa đi. Ta có thể dùng window.reload() để load lại trang thì local storage lúc này rỗng thì state cũng sẽ reset lại. Tuy nhiên không mang tính single page cho trang web. Vì vậy nên ta dùng EventTarget.
+
+Đầu tiên ở trong file `src/utils/auth.ts` khởi tạo biến `LocalStorageEventTarget` sau đó dùng biến này để dispatch 1 event mang tên là clearLS để cho `App.tsx` sẽ lắng nghe.
+
+```tsx
+// Tạo EventTarget để không phải dùng reload khi token hết hạn
+export const LocalStorageEventTarget = new EventTarget();
+
+...
+
+export const clearLS = () => {
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+  localStorage.removeItem("profile");
+  const clearLSEvent = new Event("clearLS"); // Tạo event clearLS
+  LocalStorageEventTarget.dispatchEvent(clearLSEvent); // Xuất ra 1 event để bên App lắng nghe
+};
+
+```
+
+Tại file `App.tsx`
+
+```tsx
+...
+function App() {
+  const routeElements = useRouteElements();
+  const { reset } = useContext(AppContext);
+
+  useEffect(() => {
+    // Lắng nghe event clearLS từ src/utils/auth.ts để reset state localstorage khi access_token hết hạn
+    LocalStorageEventTarget.addEventListener("clearLS", reset);
+
+    return () => {
+      LocalStorageEventTarget.removeEventListener("clearLS", reset);
+    };
+  }, [reset]);
+
+  ....
 ```
