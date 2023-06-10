@@ -29,6 +29,8 @@ export default function HistoryPurchase() {
 
   const purchasesInCart = purchasesInCartData?.data.data;
 
+  // Chúng ta dùng Link thay vì Navlink vì Navlink chỉ hoạt động tốt với params (url/purchase)
+  // còn Link hoạt động tốt với query params (url/purchase?status=0)
   const purchaseTabsLink = purchaseTabs.map((tab) => (
     <Link
       key={tab.status}

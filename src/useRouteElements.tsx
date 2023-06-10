@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 import UserLayout from "./pages/User/layouts/UserLayout";
 import ChangePassword from "./pages/User/pages/ChangePassword";
 import HistoryPurchase from "./pages/User/pages/HistoryPurchase";
+import NotFound from "./pages/User/pages/NotFound";
 import Profile from "./pages/User/pages/Profile";
 
 function ProtectedRoute() {
@@ -57,34 +58,34 @@ export default function useRouteElements() {
       element: <ProtectedRoute />,
       children: [
         {
-          path: "/cart",
+          path: path.cart,
           element: (
             <CartLayout>
               <Cart />
             </CartLayout>
           )
-        }
-      ]
-    },
-    {
-      path: path.user,
-      element: (
-        <MainLayout>
-          <UserLayout />
-        </MainLayout>
-      ),
-      children: [
-        {
-          path: path.profile,
-          element: <Profile />
         },
         {
-          path: path.changePassword,
-          element: <ChangePassword />
-        },
-        {
-          path: path.historyPurchase,
-          element: <HistoryPurchase />
+          path: path.user,
+          element: (
+            <MainLayout>
+              <UserLayout />
+            </MainLayout>
+          ),
+          children: [
+            {
+              path: path.profile,
+              element: <Profile />
+            },
+            {
+              path: path.changePassword,
+              element: <ChangePassword />
+            },
+            {
+              path: path.historyPurchase,
+              element: <HistoryPurchase />
+            }
+          ]
         }
       ]
     },
@@ -102,6 +103,14 @@ export default function useRouteElements() {
       element: (
         <MainLayout>
           <ProductList />
+        </MainLayout>
+      )
+    },
+    {
+      path: "*",
+      element: (
+        <MainLayout>
+          <NotFound />
         </MainLayout>
       )
     }
