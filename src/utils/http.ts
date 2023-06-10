@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-import axios, { AxiosError, type AxiosInstance } from "axios";
+import axios, { AxiosError, type AxiosInstance, AxiosRequestConfig } from "axios";
 import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from "src/apis/auth.api";
 import config from "src/constants/config";
 import HttpStatusCode from "src/constants/httpStatusCode.enum";
@@ -25,7 +25,7 @@ import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from "./utils";
 // Gọi lại Me: 6
 
 class Http {
-  // để chỉ dùng trong class Http
+  // để chỉ dùng trong class Http chứ bên ngoài không thể truy cập được
   instance: AxiosInstance;
   private accessToken: string; // tạo biến dùng trong class vì lưu trong RAM nhanh hơn lưu trong localStorage (trong ổ cứng)
   private refreshToken: string;
@@ -40,8 +40,10 @@ class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        "expire-access-token": 60 * 60 * 24, // 1 ngày
-        "expire-refresh-token": 60 * 60 * 24 * 160 // 160 ngày
+        // "expire-access-token": 60 * 60 * 24, // 1 ngày
+        // "expire-refresh-token": 60 * 60 * 24 * 160 // 160 ngày
+        "expire-access-token": 10, // 10 giây
+        "expire-refresh-token": 60 * 60 // 1 giờ
       }
     });
 
@@ -86,6 +88,7 @@ class Http {
         // Không nên dùng isAxiosUnprocessableEntityError để check vì nó sẽ làm error thành kiểu never, không còn là kiểu AxiosError
 
         console.log("ERROR:", error);
+
         if (
           ![HttpStatusCode.UnprocessableEntity, HttpStatusCode.Unauthorized].includes(error.response?.status as number)
         ) {
@@ -102,12 +105,15 @@ class Http {
 
         // Nếu là lỗi 401
         if (isAxiosUnauthorizedError<ErrorResponse<{ name: string; message: string }>>(error)) {
+          console.log("error isAxiosUnauthorizedError", error);
+          // const config: AxiosRequestConfig<any> = error.response?.config || {};
           const config = error.response?.config || {};
           const { url } = config;
 
+          console.log("config:", config);
+
           // Trường hợp Token hết hạn và request đó không phải là của request refresh token
           // thì chúng ta mới tiến hành gọi refresh token
-          console.log(config);
           if (isAxiosExpiredTokenError(error) && url !== URL_REFRESH_TOKEN) {
             // Hạn chế gọi 2 lần handleRefreshToken
             this.refreshTokenRequest = this.refreshTokenRequest
@@ -118,20 +124,21 @@ class Http {
                     this.refreshTokenRequest = null;
                   }, 10000);
                 });
+
             return this.refreshTokenRequest.then((access_token) => {
               // Nghĩa là chúng ta tiếp tục gọi lại request cũ vừa bị lỗi
               return this.instance({ ...config, headers: { ...config.headers, authorization: access_token } });
             });
           }
 
-          // Còn những trường hợp như token không đúng
-          // không truyền token,
+          // Còn những trường hợp như token không đúng, không truyền token,
           // token hết hạn nhưng gọi refresh token bị fail
           // thì tiến hành xóa local storage và toast message
           clearLS();
           this.accessToken = "";
           this.refreshToken = "";
           toast.error(error.response?.data.data?.message || error.response?.data.message);
+
           // Không nên dùng reload vì thế sẽ làm mất đi tính chất single page của trang web
           // window.location.reload()
         }
@@ -141,12 +148,14 @@ class Http {
     );
   }
 
+  // Thực hiện yêu cầu refresh token khi hết hạn
   private handleRefreshToken() {
     return this.instance
       .post<RefreshTokenReponse>(URL_REFRESH_TOKEN, {
         refresh_token: this.refreshToken
       })
       .then((res) => {
+        // Lúc này khi có được access token thì cập nhật vào localStorage và biên access token
         const { access_token } = res.data.data;
         setAccessTokenToLS(access_token);
         this.accessToken = access_token;

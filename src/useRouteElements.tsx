@@ -1,3 +1,4 @@
+// Suspense còn có props là fallback là component sẽ render ra UI tạm thời khi component cần load tương ứng chưa load
 import { Suspense, lazy, useContext } from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
 
