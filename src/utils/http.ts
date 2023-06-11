@@ -40,10 +40,10 @@ class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        // "expire-access-token": 60 * 60 * 24, // 1 ngày
-        // "expire-refresh-token": 60 * 60 * 24 * 160 // 160 ngày
-        "expire-access-token": 10, // 10 giây
-        "expire-refresh-token": 60 * 60 // 1 giờ
+        "expire-access-token": 60 * 60 * 24, // 1 ngày
+        "expire-refresh-token": 60 * 60 * 24 * 160 // 160 ngày
+        // "expire-access-token": 10, // 10 giây
+        // "expire-refresh-token": 60 * 60 // 1 giờ
       }
     });
 
@@ -150,7 +150,8 @@ class Http {
         refresh_token: this.refreshToken
       })
       .then((res) => {
-        // Lúc này khi có được access token thì cập nhật vào localStorage và biên access token
+        // Lúc này khi có được access token thì cập nhật vào localStorage và biến access token
+        // access_token trả về có định dạng là "Bear ...""
         const { access_token } = res.data.data;
         setAccessTokenToLS(access_token);
         this.accessToken = access_token;
