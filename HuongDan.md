@@ -597,7 +597,7 @@ Cài package `lodash` và `@types/lodash`
 
 ```bash
 yarn add lodash
-yarn add @types/lodash
+yarn add -D @types/lodash
 ```
 
 ### Cài thêm react-toastify
@@ -867,3 +867,42 @@ export default defineConfig({
 ```
 
 Khi chạy lệnh build thì sẽ tạo ra thêm file `stats.html` nên ta cần đưa nó vào `.gitignore`
+
+### Sử dụng React Helmet Async để cải thiện SEO cho trang web.
+
+React Helmet Async là phiên bản cải tiến hơn so với React Helmet
+
+```bash
+yarn add react-helmet-async
+```
+
+Trước khi đó bạn nên cài đặt package `html-to-text` để convert description trong `productDetail` loại bỏ thẻ p qua kiểu string để thêm vào trong thẻ meta trong Helmet
+
+```bash
+yarn add html-to-text
+yarn add -D @types/html-to-text
+```
+
+Bọc `HelmetProvider` lại `App` tại `src/main.tsx`
+
+```ts
+...
+import { HelmetProvider } from "react-helmet-async";
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <AppProvider>
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
+          </AppProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </HelmetProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+);
+```
