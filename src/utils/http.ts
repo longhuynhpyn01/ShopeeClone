@@ -87,8 +87,6 @@ class Http {
         // Chỉ toast lỗi khi mã code không phải là 422 và 401
         // Không nên dùng isAxiosUnprocessableEntityError để check vì nó sẽ làm error thành kiểu never, không còn là kiểu AxiosError
 
-        console.log("ERROR:", error);
-
         if (
           ![HttpStatusCode.UnprocessableEntity, HttpStatusCode.Unauthorized].includes(error.response?.status as number)
         ) {
@@ -105,12 +103,9 @@ class Http {
 
         // Nếu là lỗi 401
         if (isAxiosUnauthorizedError<ErrorResponse<{ name: string; message: string }>>(error)) {
-          console.log("error isAxiosUnauthorizedError", error);
-          // const config: AxiosRequestConfig<any> = error.response?.config || {};
-          const config = error.response?.config || {};
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const config = (error.response?.config as AxiosRequestConfig<any>) || {};
           const { url } = config;
-
-          console.log("config:", config);
 
           // Trường hợp Token hết hạn và request đó không phải là của request refresh token
           // thì chúng ta mới tiến hành gọi refresh token

@@ -108,8 +108,18 @@ export const userSchema = yup.object({
   address: yup.string().max(160, "Độ dài tối đa là 160 ký tự"),
   avatar: yup.string().max(1000, "Độ dài tối đa là 1000 ký tự"),
   date_of_birth: yup.date().max(new Date(), "Hãy chọn một ngày trong quá khứ"),
-  password: schema.fields["password"], // kế thừa từ field password của schema
-  new_password: schema.fields["password"],
+  // password: schema.fields["password"], // kế thừa từ field password của schema
+  // new_password: schema.fields["password"],
+  password: yup
+    .string()
+    .required("Password là bắt buộc")
+    .min(6, "Độ dài từ 6 - 160 ký tự")
+    .max(160, "Độ dài từ 6 - 160 ký tự"),
+  new_password: yup
+    .string()
+    .required("Password là bắt buộc")
+    .min(6, "Độ dài từ 6 - 160 ký tự")
+    .max(160, "Độ dài từ 6 - 160 ký tự"),
   confirm_password: handleConfirmPasswordYup("new_password")
 });
 
