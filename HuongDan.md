@@ -828,3 +828,42 @@ declare module "i18next" {
   }
 }
 ```
+
+### Thư viện Rollup Plugin Visualizer
+
+Vite được build dựa trên Rollup Plugin Visualizer
+Rollup Plugin Visualizer dùng để phân tích file build để xem thư viện này chiếm nhiều trong file build như Lodash...
+Ngoài ra cũng nên đọc thêm phần Build Options của Vite để tìm hiểu thêm nhiều config khi build
+Nó tương tự như Webpack Analyzer
+
+```bash
+yarn add --dev rollup-plugin-visualizer
+```
+
+Thêm import tại file `vite.config.ts`
+
+```ts
+import react from "@vitejs/plugin-react";
+import path from "path";
+import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from "vite";
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react(), visualizer()] as any,
+  server: {
+    // Để enabled source map css
+    port: 3000
+  },
+  css: {
+    devSourcemap: true
+  },
+  resolve: {
+    alias: {
+      src: path.resolve(__dirname, "./src")
+    }
+  }
+});
+```
+
+Khi chạy lệnh build thì sẽ tạo ra thêm file `stats.html` nên ta cần đưa nó vào `.gitignore`
