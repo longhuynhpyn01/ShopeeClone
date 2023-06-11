@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import để i18 có thể hoạt động
+import "src/i18n/i18n";
 
 import App from "./App";
 import ErrorBoundary from "./components/ErrorBoundary";

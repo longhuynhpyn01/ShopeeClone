@@ -1,5 +1,5 @@
 import { useContext } from "react";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -7,14 +7,16 @@ import authApi from "src/apis/auth.api";
 import path from "src/constants/path";
 import { purchasesStatus } from "src/constants/purchase";
 import { AppContext } from "src/contexts/app.context";
-// import { locales } from "src/i18n/i18n";
+import { locales } from "src/i18n/i18n";
 import { getAvatarUrl } from "src/utils/utils";
 
 import Popover from "../Popover";
 
 export default function NavHeader() {
-  // const { i18n } = useTranslation();
-  // const currentLanguage = locales[i18n.language as keyof typeof locales];
+  // i18n.language thì giá trị thuộc khoảng ['en', 'vi']
+  const { i18n } = useTranslation();
+  // Để ép kiểu giá trị thuộc key của locales là ['en', 'vi']
+  const currentLanguage = locales[i18n.language as keyof typeof locales];
 
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext);
   const queryClient = useQueryClient();
@@ -28,15 +30,13 @@ export default function NavHeader() {
     }
   });
 
-  const currentLanguage = "Tiếng Việt";
-
   const handleLogout = () => {
     logoutMutation.mutate();
   };
 
   const changeLanguage = (lng: "en" | "vi") => {
-    console.log("lng:", lng);
-    // i18n.changeLanguage(lng);
+    // Để có thể thay đổi ngôn ngữ
+    i18n.changeLanguage(lng);
   };
 
   return (

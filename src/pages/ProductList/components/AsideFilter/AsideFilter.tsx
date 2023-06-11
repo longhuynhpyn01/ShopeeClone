@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Link, createSearchParams, useNavigate } from "react-router-dom";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -32,7 +32,7 @@ type FormData = NoUndefinedField<Pick<Schema, "price_max" | "price_min">>;
 const priceSchema = schema.pick(["price_min", "price_max"]);
 
 export default function AsideFilter({ queryConfig, categories }: AsideFilterProps) {
-  // const { t } = useTranslation("home");
+  const { t } = useTranslation("home");
   const { category } = queryConfig;
   const {
     control,
@@ -86,8 +86,7 @@ export default function AsideFilter({ queryConfig, categories }: AsideFilterProp
             </g>
           </g>
         </svg>
-        {/* {t("aside filter.all categories")} */}
-        Tất cả danh mục
+        {t("aside filter.all categories")}
       </Link>
       <div className="my-4 h-[1px] bg-gray-300" />
       <ul>
@@ -137,8 +136,7 @@ export default function AsideFilter({ queryConfig, categories }: AsideFilterProp
             />
           </g>
         </svg>
-        {/* {t("aside filter.filter search")} */}
-        BỘ LỌC TÌM KIẾM
+        {t("aside filter.filter search")}
       </Link>
       <div className="my-4 h-[1px] bg-gray-300" />
       <div className="my-5">

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -18,7 +18,7 @@ import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } 
 import Product from "../ProductList/components/Product";
 
 export default function ProductDetail() {
-  // const { t } = useTranslation(["product"]);
+  const { t } = useTranslation(["product"]);
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -248,8 +248,7 @@ export default function ProductDetail() {
                   max={product.quantity}
                 />
                 <div className="ml-6 text-sm text-gray-500">
-                  {/* {product.quantity} {t("product:available")} */}
-                  {product.quantity} {"Available products"}
+                  {product.quantity} {t("product:available")}
                 </div>
               </div>
               <div className="flex items-center mt-8">
